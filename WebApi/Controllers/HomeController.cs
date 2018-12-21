@@ -2,12 +2,13 @@
 
 namespace WebApi.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class HomeController : Controller
     {
         [Route("")]
         public IActionResult Index()
         {
-            return Content("Hello world!");
+            return Redirect("swagger");
         }
     }
 }
