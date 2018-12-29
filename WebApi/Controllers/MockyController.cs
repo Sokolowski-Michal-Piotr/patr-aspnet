@@ -19,19 +19,19 @@ namespace WebApi.Controllers
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult> RequestMocky()
+        public async Task<ActionResult<string>> RequestMocky()
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("http://www.mocky.io");
                 client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
 
                 try
                 {
                     var response = await client.GetAsync("v2/5c127054330000e133998f85");
                     response.EnsureSuccessStatusCode();
-                    return Content(await response.Content.ReadAsStringAsync());
+                    return await response.Content.ReadAsStringAsync();
                 }
                 catch (Exception e)
                 {
