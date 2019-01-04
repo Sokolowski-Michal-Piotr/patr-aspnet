@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using WebApi.Interfaces;
 
 namespace WebApi.Controllers
 {
@@ -10,6 +9,13 @@ namespace WebApi.Controllers
     [ApiController]
     public class MockyController : ControllerBase
     {
+        private readonly IMockyService mocky;
+
+        public MockyController(IMockyService mocky)
+        {
+            this.mocky = mocky;
+        }
+
         /// <summary>
         /// Requests http://www.mocky.io/v2/5c127054330000e133998f85 and returns its response content.
         /// </summary>
@@ -21,22 +27,13 @@ namespace WebApi.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<string>> RequestMocky()
         {
-            using (var client = new HttpClient())
+            try
             {
-                client.BaseAddress = new Uri("http://www.mocky.io");
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
-
-                try
-                {
-                    var response = await client.GetAsync("v2/5c127054330000e133998f85");
-                    response.EnsureSuccessStatusCode();
-                    return await response.Content.ReadAsStringAsync();
-                }
-                catch (Exception e)
-                {
-                    return BadRequest(e.Message);
-                }
+                return await mocky.GetAsync();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
             }
         }
     }
