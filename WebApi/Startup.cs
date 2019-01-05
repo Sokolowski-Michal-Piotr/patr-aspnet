@@ -66,7 +66,14 @@ namespace WebApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
             });
 
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{action=index}/{id?}",
+                    defaults: new { controller = "home" }
+                );
+            });
         }
     }
 }
