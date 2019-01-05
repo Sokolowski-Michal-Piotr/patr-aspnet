@@ -9,7 +9,12 @@ namespace WebApi.Controllers
     {
         public IActionResult Index()
         {
-            return Redirect("swagger");
+            return View("About");
+        }
+
+        public IActionResult About()
+        {
+            return View();
         }
 
         public IActionResult Error()

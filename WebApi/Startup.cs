@@ -37,7 +37,8 @@ namespace WebApi
                         Name = @"Michał Sokołowski",
                         Email = "sokolowski.michal.piotr@gmail.com",
                         Url = @"https://github.com/Sokolowski-Michal-Piotr/patr-aspnet"
-                    }
+                    },
+                    Description = @"Homepage: http://patr-study.azurewebsites.net"
                 });
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
