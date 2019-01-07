@@ -8,6 +8,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using WebApi.Interfaces;
+using WebApi.Middlewares;
 using WebApi.Services;
 
 namespace WebApi
@@ -52,6 +53,8 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseMiddleware<Logger>("mylog.txt", 100000L);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
