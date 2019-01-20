@@ -8,6 +8,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using WebApi.Interfaces;
+using WebApi.Middlewares;
 using WebApi.Services;
 
 namespace WebApi
@@ -37,7 +38,8 @@ namespace WebApi
                         Name = @"Michał Sokołowski",
                         Email = "sokolowski.michal.piotr@gmail.com",
                         Url = @"https://github.com/Sokolowski-Michal-Piotr/patr-aspnet"
-                    }
+                    },
+                    Description = @"Homepage: http://patr-study.azurewebsites.net"
                 });
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -51,9 +53,15 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseMiddleware<Logger>("mylog.txt", 100000L);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/error");
             }
 
             app.UseSwagger();
@@ -62,7 +70,14 @@ namespace WebApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
             });
 
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{action=index}/{id?}",
+                    defaults: new { controller = "home" }
+                );
+            });
         }
     }
 }
