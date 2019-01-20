@@ -23,7 +23,7 @@ namespace NUnitTests
             var actionResult = await controller.RequestMocky();
 
             // Assert 
-            Assert.That(actionResult.Result, Is.Null);
+            Assert.That(actionResult.Result, Is.Null); // Null means OK (200).
             Assert.That(actionResult.Value, Is.EqualTo("Czary mary"));
         }
 
